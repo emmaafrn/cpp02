@@ -1,13 +1,13 @@
 #include "Fixed.hpp"
 
 Fixed::Fixed(){
-	fixedPoint = 0;
 	std::cout << "Default constructor called\n";
+	fixedPoint = 0;
 }
 
 Fixed::Fixed(Fixed& x){
-	this->fixedPoint = x.fixedPoint;
 	std::cout << "Copy constructor called\n";
+	this->fixedPoint = x.getRawBits();
 }
 
 Fixed::~Fixed(){
@@ -15,8 +15,8 @@ Fixed::~Fixed(){
 }
 
 Fixed &Fixed::operator=(const Fixed &x){
-	fixedPoint = x.fixedPoint;
-	std::cout << "Assignation constructor called\n";
+	std::cout << "Assignation operator called\n";
+	fixedPoint = x.getRawBits();
 	return (*this);
 }
 
@@ -27,4 +27,5 @@ int	Fixed::getRawBits(void) const{
 
 void	Fixed::setRawBits(int const raw){
 	fixedPoint = raw;
+	std::cout << "setRawBits member function called\n";
 }
