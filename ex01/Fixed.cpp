@@ -31,7 +31,7 @@ Fixed::Fixed(){
 
 Fixed::Fixed(const Fixed& x){
 	std::cout << "Copy constructor called\n";
-	fixedPoint = x.getRawBits();
+	*this = x;
 }
 
 Fixed::Fixed(const int x){
@@ -50,7 +50,7 @@ Fixed::~Fixed(){
 
 Fixed &Fixed::operator=(const Fixed &x){
 	std::cout << "Assignation operator called\n";
-	fixedPoint = x.getRawBits();
+	fixedPoint = x.fixedPoint;
 	return (*this);
 }
 

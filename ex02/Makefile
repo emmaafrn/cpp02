@@ -12,7 +12,7 @@ RM  = rm -f
 
 INC_CMP = $(addprefix -I, $(INC))
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 
 all:			$(NAME)
 

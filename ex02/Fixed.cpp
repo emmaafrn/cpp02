@@ -14,8 +14,8 @@
 // 0000 0101 ==> 5
 
 // Fixed point
-// 0101 0000 ==>
-//    ^
+// 0101 0000 ==> 5
+//  ^ ^
 
 // Floatant
 // **** **** ==> 5.5
@@ -26,36 +26,36 @@
 
 Fixed::Fixed()
 {
-	std::cout << "Default constructor called\n";
+	// std::cout << "Default constructor called\n";
 	fixedPoint = 0;
 }
 
 Fixed::Fixed(const Fixed &x)
 {
-	std::cout << "Copy constructor called\n";
-	fixedPoint = x.getRawBits();
+	// std::cout << "Copy constructor called\n";
+	*this = x;
 }
 
 Fixed::Fixed(const int x)
 {
-	std::cout << "Int constructor called\n";
+	// std::cout << "Int constructor called\n";
 	fixedPoint = x << fractionnalPart;
 }
 
 Fixed::Fixed(const float x)
 {
-	std::cout << "Float constructor called\n";
+	// std::cout << "Float constructor called\n";
 	fixedPoint = roundf(x * (1 << fractionnalPart));
 }
 
 Fixed::~Fixed()
 {
-	std::cout << "Destructor called\n";
+	// std::cout << "Destructor called\n";
 }
 
 Fixed &Fixed::operator=(const Fixed &x)
 {
-	std::cout << "Assignation operator called\n";
+	// std::cout << "Assignation operator called\n";
 	fixedPoint = x.getRawBits();
 	return (*this);
 }
@@ -74,13 +74,13 @@ Fixed &Fixed::operator-(const Fixed &x)
 
 Fixed &Fixed::operator/(const Fixed &x)
 {
-	fixedPoint = fixedPoint / x.fixedPoint;
+	fixedPoint = roundf(toFloat() / x.toFloat() * (1 << fractionnalPart));
 	return (*this);
 }
 
 Fixed &Fixed::operator*(const Fixed &x)
 {
-	fixedPoint = fixedPoint * x.fixedPoint;
+	fixedPoint = roundf(toFloat() * x.toFloat() * (1 << fractionnalPart));
 	return (*this);
 }
 
@@ -131,12 +131,25 @@ Fixed &Fixed::operator++(void){
 	return (*this);
 }
 
-Fixed &Fixed::operator++(int){
-	Fixed	oldvalue;
+Fixed Fixed::operator++(int){
+	Fixed	prev;
 
-	oldvalue.fixedPoint = fixedPoint;
+	prev = *this;
 	fixedPoint++;
-	return (oldvalue);
+	return (prev);
+}
+
+Fixed &Fixed::operator--(void){
+	fixedPoint--;
+	return (*this);
+}
+
+Fixed Fixed::operator--(int){
+	Fixed	temp;
+
+	temp = *this;
+	fixedPoint--;
+	return (temp);
 }
 
 std::ostream &operator<<(std::ostream &lhs, const Fixed &rhs)
@@ -145,27 +158,27 @@ std::ostream &operator<<(std::ostream &lhs, const Fixed &rhs)
 	return (lhs);
 }
 
-const Fixed	&Fixed::min(const Fixed &x, const Fixed &y){
-	if (x.fixedPoint < y.fixedPoint)
+const Fixed &Fixed::min(const Fixed &x, const Fixed &y){
+	if (x.toFloat() < y.toFloat())
 		return (x);
 	return (y);
 }
 
-const Fixed	&Fixed::max(const Fixed &x, const Fixed &y){
-	if (x.fixedPoint > y.fixedPoint)
+const Fixed &Fixed::max(const Fixed &x, const Fixed &y){
+	if (x.toFloat() > y.toFloat())
 		return (x);
 	return (y);
 }
 
 int Fixed::getRawBits(void) const
 {
-	std::cout << "getRawBits member function called\n";
+	// std::cout << "getRawBits member function called\n";
 	return (fixedPoint);
 }
 
 void Fixed::setRawBits(int const raw)
 {
-	std::cout << "setRawBits member function called\n";
+	// std::cout << "setRawBits member function called\n";
 	fixedPoint = raw;
 }
 
